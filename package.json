@@ -1,0 +1,25 @@
+{
+  "name": "podcast-updater",
+  "version": "0.0.1",
+  "description": "TypeScript / JavaScript files to read a webpage of links to audio files and generate a podcast XML file from that information.",
+  "author": "forevermatt",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/forevermatt/podcast-updater"
+  },
+  "bugs": {
+    "url": "https://github.com/forevermatt/podcast-updater/issues"
+  },
+  "keywords": [
+    "podcast",
+    "xml"
+  ],
+  "dependencies": {
+    "request": "2.67.0"
+  },
+  "license": "MIT"
+}
