@@ -4,8 +4,7 @@ generate a podcast XML file from that information.
 
 ## TODO
 
-* Try using <https://github.com/tmpvar/jsdom/tree/3.x> to extract data from the
-  retrieved HTML.
+* Assemble extracted mp3 link data into a podcast XML file.
 
 ## License
 This code is made available under the MIT license.

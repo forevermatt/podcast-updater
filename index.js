@@ -6,7 +6,7 @@ if (process.argv.length < 3) {
 }
 
 var webpage = new PodcastWebpage(process.argv[2]);
-webpage.getHtml(function(error, data) {
+webpage.getListOfMp3s(function(error, data) {
   if (error) {
     console.error(error);
   } else {
