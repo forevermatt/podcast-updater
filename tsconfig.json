@@ -21,6 +21,7 @@
   },
   "files": [
     "./podcast-webpage.ts",
+    "./podcast-xml.ts",
     "./podcast.ts"
   ]
 }

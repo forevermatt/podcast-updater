@@ -15,4 +15,12 @@ if (process.argv.length < 3) {
 fs.readFile(configPath, 'utf8', function(error, configJson) {
   var config = JSON.parse(configJson)
   var podcast = new Podcast(config, htmlPath);
+  podcast.generateXml(function(error, xml) {
+
+
+    // TEMP
+    console.log(xml);
+
+
+  });
 });
