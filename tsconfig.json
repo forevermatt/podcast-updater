@@ -20,6 +20,7 @@
     "rewriteTsconfig": true
   },
   "files": [
-    "./podcast-webpage.ts"
+    "./podcast-webpage.ts",
+    "./podcast.ts"
   ]
 }

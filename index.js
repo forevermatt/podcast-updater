@@ -1,15 +1,12 @@
 
-var PodcastWebpage = require('./podcast-webpage.js');
+var fs = require('fs'),
+    Podcast = require('./podcast.js');
 
 if (process.argv.length < 3) {
-  throw new Error('Please specify a URL.');
+  throw new Error('Please provide the path to a config.json file.');
 }
 
-var webpage = new PodcastWebpage(process.argv[2]);
-webpage.getListOfMp3s(function(error, data) {
-  if (error) {
-    console.error(error);
-  } else {
-    console.log(data);
-  }
+fs.readFile(process.argv[2], 'utf8', function(error, configJson) {
+  var config = JSON.parse(configJson)
+  var podcast = new Podcast(config);
 });
