@@ -1,19 +1,19 @@
 var entities = require("entities"), fs = require('fs'), htmlparser = require("htmlparser"), request = require('request'), select = require('soupselect').select;
 var PodcastWebpage = (function () {
-    function PodcastWebpage(url) {
+    function PodcastWebpage(htmlPath) {
         this.rawHtml = null;
-        this.url = url;
+        this.htmlPath = htmlPath;
     }
-    PodcastWebpage.prototype.getWebpageHtml = function (url, callback) {
+    PodcastWebpage.prototype.getWebpageHtml = function (htmlPath, callback) {
         var podcastWebpage = this;
-        if (url.indexOf('http') < 0) {
-            fs.readFile(url, 'utf8', function (error, data) {
+        if (htmlPath.indexOf('http') < 0) {
+            fs.readFile(htmlPath, 'utf8', function (error, data) {
                 return callback(null, data);
             });
         }
         else {
             request({
-                uri: url,
+                uri: htmlPath,
                 method: 'GET',
                 strictSSL: true,
                 timeout: 10000
@@ -23,7 +23,7 @@ var PodcastWebpage = (function () {
                 }
                 var statusCode = Number(response.statusCode);
                 if ((statusCode < 200) || (statusCode >= 300)) {
-                    return callback(new Error('Error (' + response.statusCode + ') retrieving "' + url + '".'), null);
+                    return callback(new Error('Error (' + response.statusCode + ') retrieving "' + htmlPath + '".'), null);
                 }
                 return callback(null, body);
             });
@@ -33,7 +33,7 @@ var PodcastWebpage = (function () {
     PodcastWebpage.prototype.getRawHtml = function (callback) {
         if (this.rawHtml === null) {
             var podcastWebpage = this;
-            this.getWebpageHtml(this.url, function (error, data) {
+            this.getWebpageHtml(this.htmlPath, function (error, data) {
                 if (error) {
                     return callback(error, null);
                 }

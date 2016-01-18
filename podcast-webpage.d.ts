@@ -3,10 +3,10 @@ declare var process: any;
 declare var require: any;
 declare var entities: any, fs: any, htmlparser: any, request: any, select: any;
 declare class PodcastWebpage {
-    private url;
+    private htmlPath;
     private rawHtml;
-    constructor(url: string);
-    private getWebpageHtml(url, callback);
+    constructor(htmlPath: string);
+    private getWebpageHtml(htmlPath, callback);
     getRawHtml(callback: Function): void;
     getHtmlDom(callback: Function): void;
     getMp3LinkTags(callback: Function): void;

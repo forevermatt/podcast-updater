@@ -10,33 +10,35 @@ var entities = require("entities"),
 
 class PodcastWebpage {
 
-  private url: string;
+  private htmlPath: string;
   private rawHtml: string;
 
-  constructor(url: string) {
+  constructor(htmlPath: string) {
     this.rawHtml = null;
-    this.url = url;
+    this.htmlPath = htmlPath;
   }
 
   /**
-   * Retrieve the HTML of the webpage at the given URL.
+   * Retrieve the HTML at the specified path.
    *
-   * @param {string} url The URL of the desired webpage.
+   * @param {string} htmlPath The path to the HTML. If it appears to be a URL,
+   *     it will be retrieved via a GET request. Otherwise, it will be treated
+   *     as a local filesystem path.
    * @param {Function} callback The callback function.
    */
-  private getWebpageHtml(url: string, callback: Function) {
+  private getWebpageHtml(htmlPath: string, callback: Function) {
 
     // Set up a reference to this that can be used in the closure below.
     var podcastWebpage = this;
 
-    if (url.indexOf('http') < 0) {
-      fs.readFile(url, 'utf8', function(error, data) {
+    if (htmlPath.indexOf('http') < 0) {
+      fs.readFile(htmlPath, 'utf8', function(error, data) {
         return callback(null, data);
       });
     } else {
       request(
         {
-          uri: url,
+          uri: htmlPath,
           method: 'GET',
           strictSSL: true,
           timeout: 10000 // Timeout in milliseconds.
@@ -50,7 +52,7 @@ class PodcastWebpage {
 
           if ((statusCode < 200) || (statusCode >= 300)) {
             return callback(new Error(
-              'Error (' + response.statusCode + ') retrieving "' + url + '".'
+              'Error (' + response.statusCode + ') retrieving "' + htmlPath + '".'
             ), null);
           }
 
@@ -63,7 +65,7 @@ class PodcastWebpage {
   public getRawHtml(callback: Function) {
     if (this.rawHtml === null) {
       var podcastWebpage: PodcastWebpage = this;
-      this.getWebpageHtml(this.url, function(error, data) {
+      this.getWebpageHtml(this.htmlPath, function(error, data) {
         if (error) {
           return callback(error, null);
         }

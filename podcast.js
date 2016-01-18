@@ -1,10 +1,10 @@
 var podcastWebpage = require('./podcast-webpage.js');
 var Podcast = (function () {
     function Podcast(config) {
-        if (config.path === undefined) {
-            throw new Error('Please provide a "path" property in your config.json.');
+        if (config.htmlPath === undefined) {
+            throw new Error('Please provide an "htmlPath" property in your config.json.');
         }
-        this.getMp3Data(config.path, function (error, mp3Data) {
+        this.getMp3Data(config.htmlPath, function (error, mp3Data) {
             if (error) {
                 console.error(error);
             }
