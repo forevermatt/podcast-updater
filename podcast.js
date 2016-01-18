@@ -1,10 +1,18 @@
 var podcastWebpage = require('./podcast-webpage.js');
 var Podcast = (function () {
-    function Podcast(config) {
-        if (config.htmlPath === undefined) {
-            throw new Error('Please provide an "htmlPath" property in your config.json.');
+    function Podcast(config, htmlPath) {
+        var htmlPathToUse;
+        if (htmlPath) {
+            htmlPathToUse = htmlPath;
         }
-        this.getMp3Data(config.htmlPath, function (error, mp3Data) {
+        else if (config.link) {
+            htmlPathToUse = config.link;
+        }
+        else {
+            throw new Error('Please either provide an htmlPath or include a "link" property in ' +
+                'your config.json.');
+        }
+        this.getMp3Data(htmlPathToUse, function (error, mp3Data) {
             if (error) {
                 console.error(error);
             }
