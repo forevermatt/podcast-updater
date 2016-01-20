@@ -12,7 +12,11 @@ var PodcastXml = (function () {
         });
     };
     PodcastXml.prototype.getBaseUrl = function (fullUrl) {
-        return "";
+        var lastSlashAt = fullUrl.lastIndexOf('/');
+        if (lastSlashAt < 0) {
+            throw new Error('Cannot extract base URl from "' + fullUrl + '"');
+        }
+        return fullUrl.substr(0, lastSlashAt + 1);
     };
     PodcastXml.prototype.getCategoryData = function (config) {
         var result = {};
@@ -45,6 +49,12 @@ var PodcastXml = (function () {
             return null;
         }
     };
+    PodcastXml.prototype.getMp3Duration = function (mp3Url) {
+        return null;
+    };
+    PodcastXml.prototype.getMp3Size = function (mp3Url) {
+        return null;
+    };
     PodcastXml.prototype.getXmlData = function (callback) {
         var now = new Date();
         var xmlData = {
@@ -75,32 +85,33 @@ var PodcastXml = (function () {
         };
         var baseUrl = this.getBaseUrl(this.config.link);
         var dateRegex = /[0-9]{1,4}-[0-9]{1,2}-[0-9]{2,4}/;
+        var podcastXml = this;
         Object.keys(this.mp3DataByUrl).forEach(function (url, index) {
-            var dateRegexMatches = dateRegex.exec(this.mp3DataByUrl[url]);
+            var dateRegexMatches = dateRegex.exec(podcastXml.mp3DataByUrl[url]);
             var dateString;
             if (dateRegexMatches.length > 0) {
                 dateString = dateRegexMatches[0];
             }
             xmlData.item.push({
-                "title": this.mp3DataByUrl[url],
-                "link": this.config.link,
+                "title": podcastXml.mp3DataByUrl[url],
+                "link": podcastXml.config.link,
                 "guid": baseUrl + url,
-                "description": this.mp3DataByUrl[url],
+                "description": podcastXml.mp3DataByUrl[url],
                 "enclosure": {
                     "@": {
                         "url": baseUrl + url,
-                        "length": this.getMp3Size(baseUrl + url),
+                        "length": podcastXml.getMp3Size(baseUrl + url),
                         "type": "audio/mpeg"
                     }
                 },
                 "category": "Podcasts",
-                "pubDate": new Date(dateString),
-                "itunes:author": "",
-                "itunes:explicit": "",
-                "itunes:duration": "",
+                "pubDate": (new Date(dateString)).toUTCString(),
+                "itunes:author": podcastXml.config.author,
+                "itunes:explicit": podcastXml.config.explicit,
+                "itunes:duration": podcastXml.getMp3Duration(baseUrl + url),
             });
         });
-        return xmlData;
+        return callback(null, xmlData);
     };
     return PodcastXml;
 })();

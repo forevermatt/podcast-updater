@@ -12,6 +12,7 @@ class PodcastXml {
   }
 
   public getAsString(callback) {
+
     this.getXmlData(function(error, data) {
       if (error) {
         return callback(new Error(error), null);
@@ -22,20 +23,18 @@ class PodcastXml {
       // TEMP
       console.log(data);
 
-
+      // TODO: Convert this JS object to an XML string.
 
     });
   }
 
-  private getBaseUrl(fullUrl) {
+  private getBaseUrl(fullUrl: string) {
+    var lastSlashAt = fullUrl.lastIndexOf('/');
+    if (lastSlashAt < 0) {
+      throw new Error('Cannot extract base URl from "' + fullUrl + '"');
+    }
 
-
-
-    // TODO: Get everything up through the last forward slash.
-    return "";
-
-
-
+    return fullUrl.substr(0, lastSlashAt + 1);
   }
 
   private getCategoryData(config) {
@@ -74,6 +73,20 @@ class PodcastXml {
     }
   }
 
+  /**
+   * TODO: Implement this.
+   */
+  public getMp3Duration(mp3Url) {
+    return null;
+  }
+
+  /**
+   * TODO: Implement this.
+   */
+  public getMp3Size(mp3Url) {
+    return null;
+  }
+
   public getXmlData(callback) {
     var now = new Date();
     var xmlData = {
@@ -105,37 +118,35 @@ class PodcastXml {
 
     var baseUrl = this.getBaseUrl(this.config.link);
     var dateRegex = /[0-9]{1,4}-[0-9]{1,2}-[0-9]{2,4}/;
+    var podcastXml = this;
 
     Object.keys(this.mp3DataByUrl).forEach(function(url, index) {
-      var dateRegexMatches = dateRegex.exec(this.mp3DataByUrl[url]);
+      var dateRegexMatches = dateRegex.exec(podcastXml.mp3DataByUrl[url]);
       var dateString;
       if (dateRegexMatches.length > 0) {
         dateString = dateRegexMatches[0];
       }
       xmlData.item.push({
-        "title": this.mp3DataByUrl[url],
-        "link": this.config.link,
+        "title": podcastXml.mp3DataByUrl[url],
+        "link": podcastXml.config.link,
         "guid": baseUrl + url,
-        "description": this.mp3DataByUrl[url],
+        "description": podcastXml.mp3DataByUrl[url],
         "enclosure": {
           "@": {
             "url": baseUrl + url,
-            "length": this.getMp3Size(baseUrl + url), // TODO: Can't do this here if async.
+            "length": podcastXml.getMp3Size(baseUrl + url), // TODO: Can't do this here if async.
             "type": "audio/mpeg"
           }
         },
         "category": "Podcasts",
-        "pubDate": new Date(dateString),
-
-
-        // TODO: Finish these.
-        "itunes:author": "",
-        "itunes:explicit": "",
-        "itunes:duration": "",
+        "pubDate": (new Date(dateString)).toUTCString(),
+        "itunes:author": podcastXml.config.author,
+        "itunes:explicit": podcastXml.config.explicit,
+        "itunes:duration": podcastXml.getMp3Duration(baseUrl + url), // TODO: Can't do this here if async.
       });
     });
 
-    return xmlData;
+    return callback(null, xmlData);
   }
 }
 
