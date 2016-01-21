@@ -80,9 +80,9 @@ var PodcastXml = (function () {
                 },
                 "itunes:explicit": this.config.explicit,
                 "itunes:image": this.getImageData(this.config),
-                "itunes:category": this.getCategoryData(this.config)
-            },
-            "item": []
+                "itunes:category": this.getCategoryData(this.config),
+                "item": []
+            }
         };
         var baseUrl = this.getBaseUrl(this.config.link);
         var dateRegex = /[0-9]{1,4}-[0-9]{1,2}-[0-9]{2,4}/;
@@ -93,7 +93,7 @@ var PodcastXml = (function () {
             if (dateRegexMatches.length > 0) {
                 dateString = dateRegexMatches[0];
             }
-            xmlData.item.push({
+            xmlData.channel.item.push({
                 "title": podcastXml.mp3DataByUrl[url],
                 "link": podcastXml.config.link,
                 "guid": baseUrl + url,

@@ -113,9 +113,9 @@ class PodcastXml {
         },
         "itunes:explicit": this.config.explicit,
         "itunes:image": this.getImageData(this.config),
-        "itunes:category": this.getCategoryData(this.config)
-      },
-      "item": []
+        "itunes:category": this.getCategoryData(this.config),
+        "item": []
+      }
     };
 
     var baseUrl = this.getBaseUrl(this.config.link);
@@ -128,7 +128,7 @@ class PodcastXml {
       if (dateRegexMatches.length > 0) {
         dateString = dateRegexMatches[0];
       }
-      xmlData.item.push({
+      xmlData.channel.item.push({
         "title": podcastXml.mp3DataByUrl[url],
         "link": podcastXml.config.link,
         "guid": baseUrl + url,
