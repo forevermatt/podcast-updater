@@ -90,18 +90,19 @@ var PodcastXml = (function () {
         Object.keys(this.mp3DataByUrl).forEach(function (url, index) {
             var dateRegexMatches = dateRegex.exec(podcastXml.mp3DataByUrl[url]);
             var dateString;
+            var mp3Url = (baseUrl + url).replace(/ /g, '%20');
             if (dateRegexMatches.length > 0) {
                 dateString = dateRegexMatches[0];
             }
             xmlData.channel.item.push({
                 "title": podcastXml.mp3DataByUrl[url],
                 "link": podcastXml.config.link,
-                "guid": baseUrl + url,
+                "guid": mp3Url,
                 "description": podcastXml.mp3DataByUrl[url],
                 "enclosure": {
                     "@": {
-                        "url": baseUrl + url,
-                        "length": podcastXml.getMp3Size(baseUrl + url),
+                        "url": mp3Url,
+                        "length": podcastXml.getMp3Size(mp3Url),
                         "type": "audio/mpeg"
                     }
                 },
@@ -109,7 +110,7 @@ var PodcastXml = (function () {
                 "pubDate": (new Date(dateString)).toUTCString(),
                 "itunes:author": podcastXml.config.author,
                 "itunes:explicit": podcastXml.config.explicit,
-                "itunes:duration": podcastXml.getMp3Duration(baseUrl + url),
+                "itunes:duration": podcastXml.getMp3Duration(mp3Url),
             });
         });
         return callback(null, xmlData);
