@@ -1,4 +1,6 @@
 declare var module: any;
+declare var require: any;
+declare var js2xmlparser: any;
 declare class PodcastXml {
     private config;
     private mp3DataByUrl;

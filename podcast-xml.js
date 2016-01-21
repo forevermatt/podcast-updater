@@ -1,3 +1,4 @@
+var js2xmlparser = require("js2xmlparser");
 var PodcastXml = (function () {
     function PodcastXml(config, mp3DataByUrl) {
         this.config = config;
@@ -8,7 +9,7 @@ var PodcastXml = (function () {
             if (error) {
                 return callback(new Error(error), null);
             }
-            console.log(data);
+            console.log(js2xmlparser("rss", data));
         });
     };
     PodcastXml.prototype.getBaseUrl = function (fullUrl) {

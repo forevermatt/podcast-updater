@@ -1,5 +1,7 @@
 declare var module: any;
-//declare var require: any;
+declare var require: any;
+
+var js2xmlparser = require("js2xmlparser");
 
 class PodcastXml {
 
@@ -21,7 +23,7 @@ class PodcastXml {
 
 
       // TEMP
-      console.log(data);
+      console.log(js2xmlparser("rss", data));
 
       // TODO: Convert this JS object to an XML string.
 
