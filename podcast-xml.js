@@ -1,8 +1,8 @@
 var js2xmlparser = require("js2xmlparser"), rfc822Date = require('rfc822-date');
 var PodcastXml = (function () {
-    function PodcastXml(config, mp3DataByUrl) {
+    function PodcastXml(config, mp3Data) {
         this.config = config;
-        this.mp3DataByUrl = mp3DataByUrl;
+        this.mp3Data = mp3Data;
     }
     PodcastXml.prototype.getAsString = function (callback) {
         this.getXmlData(function (error, data) {
@@ -50,12 +50,6 @@ var PodcastXml = (function () {
             return null;
         }
     };
-    PodcastXml.prototype.getMp3Duration = function (mp3Url) {
-        return null;
-    };
-    PodcastXml.prototype.getMp3Size = function (mp3Url) {
-        return null;
-    };
     PodcastXml.prototype.getXmlData = function (callback) {
         var now = new Date();
         var nowRfc822 = rfc822Date(now);
@@ -88,22 +82,23 @@ var PodcastXml = (function () {
         var baseUrl = this.getBaseUrl(this.config.link);
         var dateRegex = /[0-9]{1,4}-[0-9]{1,2}-[0-9]{2,4}/;
         var podcastXml = this;
-        Object.keys(this.mp3DataByUrl).forEach(function (url, index) {
-            var mp3Url = (baseUrl + url).replace(/ /g, '%20');
-            var dateRegexMatches = dateRegex.exec(podcastXml.mp3DataByUrl[url]);
+        this.mp3Data.forEach(function (mp3, index) {
+            var url = mp3.getUrl();
+            var mp3FullUrl = (baseUrl + url).replace(/ /g, '%20');
+            var dateRegexMatches = dateRegex.exec(mp3.getLabel());
             var dateString;
             if (dateRegexMatches.length > 0) {
                 dateString = dateRegexMatches[0] + ' 12:00:00';
             }
             xmlData.channel.item.push({
-                "title": podcastXml.mp3DataByUrl[url],
+                "title": mp3.getLabel(),
                 "link": podcastXml.config.link,
-                "guid": mp3Url,
-                "description": podcastXml.mp3DataByUrl[url],
+                "guid": mp3FullUrl,
+                "description": mp3.getLabel(),
                 "enclosure": {
                     "@": {
-                        "url": mp3Url,
-                        "length": podcastXml.getMp3Size(mp3Url),
+                        "url": mp3FullUrl,
+                        "length": mp3.getSize(),
                         "type": "audio/mpeg"
                     }
                 },
@@ -111,7 +106,7 @@ var PodcastXml = (function () {
                 "pubDate": rfc822Date(new Date(dateString)),
                 "itunes:author": podcastXml.config.author,
                 "itunes:explicit": podcastXml.config.explicit,
-                "itunes:duration": podcastXml.getMp3Duration(mp3Url),
+                "itunes:duration": mp3.getDuration(),
             });
         });
         return callback(null, xmlData);

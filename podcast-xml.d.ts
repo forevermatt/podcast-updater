@@ -3,13 +3,11 @@ declare var require: any;
 declare var js2xmlparser: any, rfc822Date: any;
 declare class PodcastXml {
     private config;
-    private mp3DataByUrl;
-    constructor(config: any, mp3DataByUrl: any);
+    private mp3Data;
+    constructor(config: any, mp3Data: any);
     getAsString(callback: any): void;
     private getBaseUrl(fullUrl);
     private getCategoryData(config);
     private getImageData(config);
-    getMp3Duration(mp3Url: any): any;
-    getMp3Size(mp3Url: any): any;
     getXmlData(callback: any): any;
 }

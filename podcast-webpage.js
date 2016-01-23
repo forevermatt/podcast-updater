@@ -1,4 +1,4 @@
-var entities = require("entities"), fs = require('fs'), htmlparser = require("htmlparser"), request = require('request'), select = require('soupselect').select;
+var entities = require("entities"), fs = require('fs'), htmlparser = require("htmlparser"), request = require('request'), select = require('soupselect').select, Mp3Class = require('./mp3.js');
 var PodcastWebpage = (function () {
     function PodcastWebpage(htmlPath) {
         this.rawHtml = null;
@@ -84,20 +84,13 @@ var PodcastWebpage = (function () {
                 return callback(new Error(error), null);
             }
             var label, url;
-            var mp3LabelsByUrl = {};
+            var mp3s = [];
             mp3LinkTags.forEach(function (mp3LinkTag, index, array) {
                 url = entities.decodeXML(mp3LinkTag.attribs.href);
-                label = PodcastWebpage.getLinkText(mp3LinkTag);
-                if (mp3LabelsByUrl[url]) {
-                    if (mp3LabelsByUrl[url].indexOf(label.trim()) < 0) {
-                        mp3LabelsByUrl[url] += ' ' + label.trim();
-                    }
-                }
-                else {
-                    mp3LabelsByUrl[url] = label.trim();
-                }
+                label = PodcastWebpage.getLinkText(mp3LinkTag).trim();
+                mp3s.push(new Mp3Class(url, label));
             });
-            return callback(null, mp3LabelsByUrl);
+            return callback(null, mp3s);
         });
     };
     PodcastWebpage.isMp3LinkTag = function (linkTag) {

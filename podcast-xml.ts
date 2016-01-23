@@ -7,11 +7,11 @@ var js2xmlparser = require("js2xmlparser"),
 class PodcastXml {
 
   private config;
-  private mp3DataByUrl;
+  private mp3Data;
 
-  constructor(config, mp3DataByUrl) {
+  constructor(config, mp3Data) {
     this.config = config;
-    this.mp3DataByUrl = mp3DataByUrl;
+    this.mp3Data = mp3Data;
   }
 
   public getAsString(callback) {
@@ -76,20 +76,6 @@ class PodcastXml {
     }
   }
 
-  /**
-   * TODO: Implement this.
-   */
-  public getMp3Duration(mp3Url) {
-    return null;
-  }
-
-  /**
-   * TODO: Implement this.
-   */
-  public getMp3Size(mp3Url) {
-    return null;
-  }
-
   public getXmlData(callback) {
     var now = new Date();
     var nowRfc822 = rfc822Date(now);
@@ -124,22 +110,23 @@ class PodcastXml {
     var dateRegex = /[0-9]{1,4}-[0-9]{1,2}-[0-9]{2,4}/;
     var podcastXml = this;
 
-    Object.keys(this.mp3DataByUrl).forEach(function(url, index) {
-      var mp3Url = (baseUrl + url).replace(/ /g, '%20');
-      var dateRegexMatches = dateRegex.exec(podcastXml.mp3DataByUrl[url]);
+    this.mp3Data.forEach(function(mp3: Mp3, index) {
+      var url = mp3.getUrl();
+      var mp3FullUrl = (baseUrl + url).replace(/ /g, '%20');
+      var dateRegexMatches = dateRegex.exec(mp3.getLabel());
       var dateString: string;
       if (dateRegexMatches.length > 0) {
         dateString = dateRegexMatches[0] + ' 12:00:00';
       }
       xmlData.channel.item.push({
-        "title": podcastXml.mp3DataByUrl[url],
+        "title": mp3.getLabel(),
         "link": podcastXml.config.link,
-        "guid": mp3Url,
-        "description": podcastXml.mp3DataByUrl[url],
+        "guid": mp3FullUrl,
+        "description": mp3.getLabel(),
         "enclosure": {
           "@": {
-            "url": mp3Url,
-            "length": podcastXml.getMp3Size(mp3Url), // TODO: Can't do this here if async.
+            "url": mp3FullUrl,
+            "length": mp3.getSize(), // TODO: Can't do this here if async.
             "type": "audio/mpeg"
           }
         },
@@ -147,7 +134,7 @@ class PodcastXml {
         "pubDate": rfc822Date(new Date(dateString)),
         "itunes:author": podcastXml.config.author,
         "itunes:explicit": podcastXml.config.explicit,
-        "itunes:duration": podcastXml.getMp3Duration(mp3Url), // TODO: Can't do this here if async.
+        "itunes:duration": mp3.getDuration(), // TODO: Can't do this here if async.
       });
     });
 

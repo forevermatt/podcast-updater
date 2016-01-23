@@ -1,7 +1,7 @@
 declare var module: any;
 declare var process: any;
 declare var require: any;
-declare var entities: any, fs: any, htmlparser: any, request: any, select: any;
+declare var entities: any, fs: any, htmlparser: any, request: any, select: any, Mp3Class: any;
 declare class PodcastWebpage {
     private htmlPath;
     private rawHtml;
