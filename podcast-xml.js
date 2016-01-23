@@ -9,7 +9,7 @@ var PodcastXml = (function () {
             if (error) {
                 return callback(new Error(error), null);
             }
-            console.log(js2xmlparser("rss", data));
+            return callback(null, js2xmlparser("rss", data));
         });
     };
     PodcastXml.prototype.getBaseUrl = function (fullUrl) {

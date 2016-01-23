@@ -21,13 +21,7 @@ class PodcastXml {
         return callback(new Error(error), null);
       }
 
-
-
-      // TEMP
-      console.log(js2xmlparser("rss", data));
-
-      // TODO: Convert this JS object to an XML string.
-
+      return callback(null, js2xmlparser("rss", data));
     });
   }
 

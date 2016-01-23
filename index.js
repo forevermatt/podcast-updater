@@ -16,11 +16,17 @@ fs.readFile(configPath, 'utf8', function(error, configJson) {
   var config = JSON.parse(configJson)
   var podcast = new Podcast(config, htmlPath);
   podcast.generateXml(function(error, xml) {
+    if (error) {
+      return console.error(error);
+    }
 
+    var targetFile = config.target || 'podcast.xml';
+    fs.writeFile(targetFile, xml, function(error) {
+      if (error) {
+        return console.error(error);
+      }
 
-    // TEMP
-    console.log(xml);
-
-
+      console.log('Created/updated "' + targetFile + '".');
+    });
   });
 });
