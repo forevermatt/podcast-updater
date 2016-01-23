@@ -23,6 +23,7 @@
     "htmlparser": "1.7.7",
     "js2xmlparser": "1.0.0",
     "request": "2.67.0",
+    "rfc822-date": "0.0.3",
     "soupselect": "0.2.0"
   },
   "license": "MIT"

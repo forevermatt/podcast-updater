@@ -5,7 +5,6 @@ generate a podcast XML file from that information.
 ## TODO
 
 * Assemble podcast XML data.
-* Correct the format of the date strings used in the XML.
 * Get the size (in Bytes) of the mp3 files (perhaps via the HTTP response
   headers for any such headers we've not received yet).
 * If necessary, try using https://github.com/leetreveil/musicmetadata to get the

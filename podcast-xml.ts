@@ -1,7 +1,8 @@
 declare var module: any;
 declare var require: any;
 
-var js2xmlparser = require("js2xmlparser");
+var js2xmlparser = require("js2xmlparser"),
+    rfc822Date = require('rfc822-date');
 
 class PodcastXml {
 
@@ -91,6 +92,7 @@ class PodcastXml {
 
   public getXmlData(callback) {
     var now = new Date();
+    var nowRfc822 = rfc822Date(now);
     var xmlData = {
       "@": {
         "xmlns:itunes": "http://www.itunes.com/dtds/podcast-1.0.dtd",
@@ -102,8 +104,8 @@ class PodcastXml {
         "link": this.config.link,
         "language": this.config.language || "en-us",
         "copyright": this.config.copyright || ("Copyright " + now.getFullYear()),
-        "lastBuildDate": now,
-        "pubDate": now,
+        "lastBuildDate": nowRfc822,
+        "pubDate": nowRfc822,
         "docs": "http://blogs.law.harvard.edu/tech/rss",
         "webMaster": this.config.webMaster,
         "itunes:author": this.config.author,
@@ -123,11 +125,11 @@ class PodcastXml {
     var podcastXml = this;
 
     Object.keys(this.mp3DataByUrl).forEach(function(url, index) {
-      var dateRegexMatches = dateRegex.exec(podcastXml.mp3DataByUrl[url]);
-      var dateString;
       var mp3Url = (baseUrl + url).replace(/ /g, '%20');
+      var dateRegexMatches = dateRegex.exec(podcastXml.mp3DataByUrl[url]);
+      var dateString: string;
       if (dateRegexMatches.length > 0) {
-        dateString = dateRegexMatches[0];
+        dateString = dateRegexMatches[0] + ' 12:00:00';
       }
       xmlData.channel.item.push({
         "title": podcastXml.mp3DataByUrl[url],
@@ -142,7 +144,7 @@ class PodcastXml {
           }
         },
         "category": "Podcasts",
-        "pubDate": (new Date(dateString)).toUTCString(),
+        "pubDate": rfc822Date(new Date(dateString)),
         "itunes:author": podcastXml.config.author,
         "itunes:explicit": podcastXml.config.explicit,
         "itunes:duration": podcastXml.getMp3Duration(mp3Url), // TODO: Can't do this here if async.
