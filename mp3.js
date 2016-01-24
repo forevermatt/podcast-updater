@@ -1,6 +1,6 @@
 var Mp3 = (function () {
-    function Mp3(url, label) {
-        this.url = url;
+    function Mp3(urlPath, label) {
+        this.urlPath = urlPath.trim();
         this.label = label.trim();
     }
     Mp3.prototype.getDuration = function () {
@@ -12,8 +12,8 @@ var Mp3 = (function () {
     Mp3.prototype.getLabel = function () {
         return this.label;
     };
-    Mp3.prototype.getUrl = function () {
-        return this.url;
+    Mp3.prototype.getUrlPath = function () {
+        return this.urlPath;
     };
     return Mp3;
 })();

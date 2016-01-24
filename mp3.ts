@@ -3,11 +3,11 @@ declare var module: any;
 
 class Mp3 {
 
-  private url: string;
   private label: string;
+  private urlPath: string;
 
-  constructor(url: string, label: string) {
-    this.url = url;
+  constructor(urlPath: string, label: string) {
+    this.urlPath = urlPath.trim();
     this.label = label.trim();
   }
 
@@ -29,8 +29,8 @@ class Mp3 {
     return this.label;
   }
 
-  public getUrl() {
-    return this.url;
+  public getUrlPath(): string {
+    return this.urlPath;
   }
 }
 
