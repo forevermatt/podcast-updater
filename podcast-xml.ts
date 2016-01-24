@@ -12,6 +12,8 @@ class PodcastXml {
   constructor(config, mp3Data) {
     this.config = config;
     this.mp3Data = mp3Data;
+
+    PodcastXml.validateConfig(this.config);
   }
 
   public getAsString(callback) {
@@ -120,6 +122,16 @@ class PodcastXml {
     });
 
     return callback(null, xmlData);
+  }
+
+  public static validateConfig(config) {
+    if (config.link.substr(0, 5) === 'https') {
+      throw new Error('The link URL must use "http", not "https".');
+    }
+
+    if (config.image && config.image.substr(0, 5) === 'https') {
+      throw new Error('The image URL must use "http", not "https".');
+    }
   }
 }
 

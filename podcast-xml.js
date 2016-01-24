@@ -3,6 +3,7 @@ var PodcastXml = (function () {
     function PodcastXml(config, mp3Data) {
         this.config = config;
         this.mp3Data = mp3Data;
+        PodcastXml.validateConfig(this.config);
     }
     PodcastXml.prototype.getAsString = function (callback) {
         this.getXmlData(function (error, data) {
@@ -98,6 +99,14 @@ var PodcastXml = (function () {
             });
         });
         return callback(null, xmlData);
+    };
+    PodcastXml.validateConfig = function (config) {
+        if (config.link.substr(0, 5) === 'https') {
+            throw new Error('The link URL must use "http", not "https".');
+        }
+        if (config.image && config.image.substr(0, 5) === 'https') {
+            throw new Error('The image URL must use "http", not "https".');
+        }
     };
     return PodcastXml;
 })();

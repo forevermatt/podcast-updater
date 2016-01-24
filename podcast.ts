@@ -13,6 +13,8 @@ class Podcast {
   constructor(config, htmlPath) {
     this.config = config;
 
+    podcastXml.validateConfig(this.config);
+
     if ( ! config.link) {
       throw new Error(
         'Please either include a "link" property in your config.json. You ' +

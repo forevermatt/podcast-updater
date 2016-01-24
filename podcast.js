@@ -3,6 +3,7 @@ var podcastXml = require('./podcast-xml.js');
 var Podcast = (function () {
     function Podcast(config, htmlPath) {
         this.config = config;
+        podcastXml.validateConfig(this.config);
         if (!config.link) {
             throw new Error('Please either include a "link" property in your config.json. You ' +
                 'can also (optionally) provide the path to a local cached copy of ' +

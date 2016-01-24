@@ -9,4 +9,5 @@ declare class PodcastXml {
     private getCategoryData(config);
     private getImageData(config);
     getXmlData(callback: any): any;
+    static validateConfig(config: any): void;
 }
