@@ -1,0 +1,28 @@
+{
+  "compilerOptions": {
+    "declaration": true,
+    "module": "commonjs",
+    "noImplicitAny": false,
+    "removeComments": true,
+    "rootDir": ".",
+    "sourceMap": false,
+    "target": "es5"
+  },
+  "exclude": [
+    ".git",
+    "node_modules"
+  ],
+  "filesGlob": [
+    "./*.ts",
+    "!./*.d.ts"
+  ],
+  "atom": {
+    "rewriteTsconfig": true
+  },
+  "files": [
+    "./mp3.ts",
+    "./podcast-webpage.ts",
+    "./podcast-xml.ts",
+    "./podcast.ts"
+  ]
+}
