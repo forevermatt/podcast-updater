@@ -3,15 +3,16 @@ var podcastXml = require('./podcast-xml.js');
 var Podcast = (function () {
     function Podcast(config, htmlPath) {
         this.config = config;
+        if (!config.link) {
+            throw new Error('Please either include a "link" property in your config.json. You ' +
+                'can also (optionally) provide the path to a local cached copy of ' +
+                'the HTML to avoid unnecessary HTTP requests.');
+        }
         if (htmlPath) {
             this.htmlPath = htmlPath;
         }
         else if (config.link) {
             this.htmlPath = config.link;
-        }
-        else {
-            throw new Error('Please either provide an htmlPath or include a "link" property in ' +
-                'your config.json.');
         }
     }
     Podcast.prototype.generateXml = function (callback) {
