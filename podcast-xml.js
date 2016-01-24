@@ -73,6 +73,9 @@ var PodcastXml = (function () {
             }
         };
         var podcastXml = this;
+        this.mp3Data.sort(function (a, b) {
+            return b.getDate() - a.getDate();
+        });
         this.mp3Data.forEach(function (mp3, index) {
             var mp3FullUrl = mp3.getFullUrl();
             xmlData.channel.item.push({
