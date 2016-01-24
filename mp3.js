@@ -16,6 +16,12 @@ var Mp3 = (function () {
     Mp3.prototype.getUrlPath = function () {
         return this.urlPath;
     };
+    Mp3.prototype.getFullUrl = function () {
+        if (!this.baseUrl) {
+            throw new Error("This MP3's base URL is unknown, so we cannot determine its full URL.");
+        }
+        return (this.baseUrl + this.urlPath).replace(/ /g, '%20');
+    };
     Mp3.getSizeOfMp3 = function (mp3, callback) {
         request
             .head(mp3.getFullUrl())
@@ -23,6 +29,9 @@ var Mp3 = (function () {
             var numBytes = Number(response.headers['content-length']);
             return callback(null, numBytes);
         });
+    };
+    Mp3.prototype.setBaseUrl = function (baseUrl) {
+        this.baseUrl = baseUrl.trim();
     };
     Mp3.prototype.setSize = function (numBytes) {
         this.size = numBytes;

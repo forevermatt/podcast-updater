@@ -5,6 +5,7 @@ var request = require('request');
 
 class Mp3 {
 
+  private baseUrl: string;
   private label: string;
   private size: Number;
   private urlPath: string;
@@ -33,6 +34,15 @@ class Mp3 {
     return this.urlPath;
   }
 
+  public getFullUrl(): string {
+    if ( ! this.baseUrl) {
+      throw new Error(
+        "This MP3's base URL is unknown, so we cannot determine its full URL."
+      );
+    }
+    return (this.baseUrl + this.urlPath).replace(/ /g, '%20');
+  }
+
   public static getSizeOfMp3(mp3: Mp3, callback: Function) {
     request
       .head(mp3.getFullUrl())
@@ -40,6 +50,10 @@ class Mp3 {
         var numBytes = Number(response.headers['content-length']);
         return callback(null, numBytes);
       });
+  }
+
+  public setBaseUrl(baseUrl: string) {
+    this.baseUrl = baseUrl.trim();
   }
 
   public setSize(numBytes: Number) {
