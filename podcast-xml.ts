@@ -107,7 +107,7 @@ class PodcastXml {
         "enclosure": {
           "@": {
             "url": mp3FullUrl,
-            "length": mp3.getSize(), // TODO: Can't do this here if async.
+            "length": mp3.getSize(),
             "type": "audio/mpeg"
           }
         },
