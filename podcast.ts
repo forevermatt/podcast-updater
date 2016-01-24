@@ -1,8 +1,10 @@
 declare var module: any;
 declare var require: any;
 
-var podcastWebpage = require('./podcast-webpage.js');
-var podcastXml = require('./podcast-xml.js');
+var async = require('async'),
+    Mp3Class = require('./mp3.js'),
+    podcastWebpage = require('./podcast-webpage.js'),
+    podcastXml = require('./podcast-xml.js');
 
 class Podcast {
 
@@ -57,9 +59,34 @@ class Podcast {
     });
   }
 
-  private getMp3Data(path, callback) {
-    var webpage = new podcastWebpage(path);
-    webpage.getListOfMp3s(callback);
+  private getMp3Data(htmlPath, callback) {
+    var podcast = this;
+    var webpage = new podcastWebpage(htmlPath);
+    webpage.getListOfMp3s(function(err, mp3s) {
+      if (err) {
+        return callback(new Error(err), null);
+      }
+      var baseUrl = podcast.getWebpageBaseUrl();
+
+      mp3s.forEach(function(mp3: Mp3) {
+        mp3.setBaseUrl(baseUrl);
+      });
+
+      async.each(mp3s, function(mp3, callback) {
+        Mp3Class.getSizeOfMp3(mp3, function(error, size) {
+          if (error) {
+            return callback(error);
+          }
+          mp3.setSize(size);
+          return callback();
+        });
+      }, function(err) {
+        if (err) {
+          return callback(new Error(err), null);
+        }
+        return callback(null, mp3s);
+      });
+    });
   }
 }
 
