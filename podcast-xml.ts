@@ -101,17 +101,11 @@ class PodcastXml {
     };
 
     var baseUrl = this.getBaseUrl(this.config.link);
-    var dateRegex = /[0-9]{1,4}-[0-9]{1,2}-[0-9]{2,4}/;
     var podcastXml = this;
 
     this.mp3Data.forEach(function(mp3: Mp3, index) {
       var url = mp3.getUrl();
       var mp3FullUrl = (baseUrl + url).replace(/ /g, '%20');
-      var dateRegexMatches = dateRegex.exec(mp3.getLabel());
-      var dateString: string;
-      if (dateRegexMatches.length > 0) {
-        dateString = dateRegexMatches[0] + ' 12:00:00';
-      }
       xmlData.channel.item.push({
         "title": mp3.getLabel(),
         "link": podcastXml.config.link,
@@ -125,7 +119,7 @@ class PodcastXml {
           }
         },
         "category": "Podcasts",
-        "pubDate": rfc822Date(new Date(dateString)),
+        "pubDate": mp3.getPubDate(),
         "itunes:author": podcastXml.config.author,
         "itunes:explicit": podcastXml.config.explicit,
         "itunes:duration": mp3.getDuration(), // TODO: Can't do this here if async.
