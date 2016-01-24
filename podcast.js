@@ -8,6 +8,7 @@ var Podcast = (function () {
                 'can also (optionally) provide the path to a local cached copy of ' +
                 'the HTML to avoid unnecessary HTTP requests.');
         }
+        this.webpageBaseUrl = Podcast.getBaseUrl(config.link);
         if (htmlPath) {
             this.htmlPath = htmlPath;
         }
@@ -15,6 +16,16 @@ var Podcast = (function () {
             this.htmlPath = config.link;
         }
     }
+    Podcast.getBaseUrl = function (fullUrl) {
+        var lastSlashAt = fullUrl.lastIndexOf('/');
+        if (lastSlashAt < 0) {
+            throw new Error('Cannot extract base URL from "' + fullUrl + '"');
+        }
+        return fullUrl.substr(0, lastSlashAt + 1);
+    };
+    Podcast.prototype.getWebpageBaseUrl = function () {
+        return this.webpageBaseUrl;
+    };
     Podcast.prototype.generateXml = function (callback) {
         var podcast = this;
         this.getMp3Data(this.htmlPath, function (error, mp3Data) {

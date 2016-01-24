@@ -8,6 +8,7 @@ class Podcast {
 
   private config;
   private htmlPath: string;
+  private webpageBaseUrl: string;
 
   constructor(config, htmlPath) {
     this.config = config;
@@ -20,11 +21,26 @@ class Podcast {
       );
     }
 
+    this.webpageBaseUrl = Podcast.getBaseUrl(config.link);
+
     if (htmlPath) {
       this.htmlPath = htmlPath;
     } else if (config.link) {
       this.htmlPath = config.link;
     }
+  }
+
+  public static getBaseUrl(fullUrl: string): string {
+    var lastSlashAt = fullUrl.lastIndexOf('/');
+    if (lastSlashAt < 0) {
+      throw new Error('Cannot extract base URL from "' + fullUrl + '"');
+    }
+
+    return fullUrl.substr(0, lastSlashAt + 1);
+  }
+
+  private getWebpageBaseUrl() {
+    return this.webpageBaseUrl;
   }
 
   public generateXml(callback) {
