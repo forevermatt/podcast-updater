@@ -25,7 +25,7 @@ class Mp3 {
     return this.size;
   }
 
-  public getLabel() {
+  public getLabel(): string {
     return this.label;
   }
 
