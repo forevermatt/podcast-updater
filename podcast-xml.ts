@@ -81,7 +81,10 @@ class PodcastXml {
         "pubDate": nowRfc822,
         "docs": "http://blogs.law.harvard.edu/tech/rss",
         "webMaster": this.config.webMaster,
+        "ttl": "60", // This podcast XML's TTL (in minutes).
         "itunes:author": this.config.author,
+        "itunes:subtitle": this.config.subtitle,
+        "itunes:summary": this.config.description,
         "itunes:owner": {
           "itunes:name": this.config.owner.name,
           "itunes:email": this.config.owner.email
@@ -106,6 +109,7 @@ class PodcastXml {
         "link": podcastXml.config.link,
         "guid": mp3FullUrl,
         "description": mp3.getLabel(),
+        "itunes:summary": mp3.getLabel(),
         "enclosure": {
           "@": {
             "url": mp3FullUrl,
@@ -116,8 +120,8 @@ class PodcastXml {
         "category": "Podcasts",
         "pubDate": mp3.getPubDate(),
         "itunes:author": podcastXml.config.author,
-        "itunes:explicit": podcastXml.config.explicit,
-        "itunes:duration": mp3.getDuration(), // TODO: Can't do this here if async.
+        "itunes:explicit": podcastXml.config.explicit//,
+        //"itunes:duration": mp3.getDuration(), // TODO: Can't do this here if async.
       });
     });
 

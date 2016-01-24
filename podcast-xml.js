@@ -62,7 +62,10 @@ var PodcastXml = (function () {
                 "pubDate": nowRfc822,
                 "docs": "http://blogs.law.harvard.edu/tech/rss",
                 "webMaster": this.config.webMaster,
+                "ttl": "60",
                 "itunes:author": this.config.author,
+                "itunes:subtitle": this.config.subtitle,
+                "itunes:summary": this.config.description,
                 "itunes:owner": {
                     "itunes:name": this.config.owner.name,
                     "itunes:email": this.config.owner.email
@@ -84,6 +87,7 @@ var PodcastXml = (function () {
                 "link": podcastXml.config.link,
                 "guid": mp3FullUrl,
                 "description": mp3.getLabel(),
+                "itunes:summary": mp3.getLabel(),
                 "enclosure": {
                     "@": {
                         "url": mp3FullUrl,
@@ -94,8 +98,7 @@ var PodcastXml = (function () {
                 "category": "Podcasts",
                 "pubDate": mp3.getPubDate(),
                 "itunes:author": podcastXml.config.author,
-                "itunes:explicit": podcastXml.config.explicit,
-                "itunes:duration": mp3.getDuration(),
+                "itunes:explicit": podcastXml.config.explicit
             });
         });
         return callback(null, xmlData);
