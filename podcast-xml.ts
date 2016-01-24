@@ -25,15 +25,6 @@ class PodcastXml {
     });
   }
 
-  private getBaseUrl(fullUrl: string) {
-    var lastSlashAt = fullUrl.lastIndexOf('/');
-    if (lastSlashAt < 0) {
-      throw new Error('Cannot extract base URl from "' + fullUrl + '"');
-    }
-
-    return fullUrl.substr(0, lastSlashAt + 1);
-  }
-
   private getCategoryData(config) {
     var result = {};
 
@@ -100,12 +91,10 @@ class PodcastXml {
       }
     };
 
-    var baseUrl = this.getBaseUrl(this.config.link);
     var podcastXml = this;
 
     this.mp3Data.forEach(function(mp3: Mp3, index) {
-      var url = mp3.getUrl();
-      var mp3FullUrl = (baseUrl + url).replace(/ /g, '%20');
+      var mp3FullUrl = mp3.getFullUrl();
       xmlData.channel.item.push({
         "title": mp3.getLabel(),
         "link": podcastXml.config.link,

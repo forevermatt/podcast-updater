@@ -12,13 +12,6 @@ var PodcastXml = (function () {
             return callback(null, js2xmlparser("rss", data));
         });
     };
-    PodcastXml.prototype.getBaseUrl = function (fullUrl) {
-        var lastSlashAt = fullUrl.lastIndexOf('/');
-        if (lastSlashAt < 0) {
-            throw new Error('Cannot extract base URl from "' + fullUrl + '"');
-        }
-        return fullUrl.substr(0, lastSlashAt + 1);
-    };
     PodcastXml.prototype.getCategoryData = function (config) {
         var result = {};
         if (config.category) {
@@ -79,11 +72,9 @@ var PodcastXml = (function () {
                 "item": []
             }
         };
-        var baseUrl = this.getBaseUrl(this.config.link);
         var podcastXml = this;
         this.mp3Data.forEach(function (mp3, index) {
-            var url = mp3.getUrl();
-            var mp3FullUrl = (baseUrl + url).replace(/ /g, '%20');
+            var mp3FullUrl = mp3.getFullUrl();
             xmlData.channel.item.push({
                 "title": mp3.getLabel(),
                 "link": podcastXml.config.link,

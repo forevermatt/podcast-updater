@@ -6,7 +6,6 @@ declare class PodcastXml {
     private mp3Data;
     constructor(config: any, mp3Data: any);
     getAsString(callback: any): void;
-    private getBaseUrl(fullUrl);
     private getCategoryData(config);
     private getImageData(config);
     getXmlData(callback: any): any;
