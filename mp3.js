@@ -1,7 +1,7 @@
 var Mp3 = (function () {
     function Mp3(url, label) {
         this.url = url;
-        this.label = label;
+        this.label = label.trim();
     }
     Mp3.prototype.getDuration = function () {
         return null;

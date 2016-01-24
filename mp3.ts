@@ -8,7 +8,7 @@ class Mp3 {
 
   constructor(url: string, label: string) {
     this.url = url;
-    this.label = label;
+    this.label = label.trim();
   }
 
   /**
