@@ -15,7 +15,7 @@ class Mp3 {
 
   constructor(urlPath: string, label: string) {
     this.urlPath = urlPath.trim();
-    this.label = label.trim();
+    this.setLabel(label);
   }
 
   /**
@@ -83,6 +83,10 @@ class Mp3 {
 
   public setBaseUrl(baseUrl: string) {
     this.baseUrl = baseUrl.trim();
+  }
+
+  public setLabel(label: string) {
+    this.label = label && label.trim();
   }
 
   public setSize(numBytes: Number) {

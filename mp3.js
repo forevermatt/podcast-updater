@@ -4,7 +4,7 @@ var Mp3 = (function () {
     function Mp3(urlPath, label) {
         this.dateRegex = /[0-9]{1,4}[-/]{1}[0-9]{1,2}[-/]{1}[0-9]{1,4}/;
         this.urlPath = urlPath.trim();
-        this.label = label.trim();
+        this.setLabel(label);
     }
     Mp3.prototype.getDuration = function () {
         return null;
@@ -58,6 +58,9 @@ var Mp3 = (function () {
     };
     Mp3.prototype.setBaseUrl = function (baseUrl) {
         this.baseUrl = baseUrl.trim();
+    };
+    Mp3.prototype.setLabel = function (label) {
+        this.label = label && label.trim();
     };
     Mp3.prototype.setSize = function (numBytes) {
         this.size = numBytes;
