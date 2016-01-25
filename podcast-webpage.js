@@ -90,6 +90,21 @@ var PodcastWebpage = (function () {
                 label = PodcastWebpage.getLinkText(mp3LinkTag).trim();
                 mp3s.push(new Mp3Class(url, label));
             });
+            var mp3sByUrlPath = {};
+            mp3s = mp3s.filter(function (mp3, index, array) {
+                var existingMp3 = mp3sByUrlPath[mp3.getUrlPath()];
+                if (existingMp3) {
+                    var existingLabel = existingMp3.getLabel();
+                    if (existingLabel.indexOf(mp3.getLabel()) < 0) {
+                        existingMp3.setLabel(existingMp3.getLabel() + mp3.getLabel());
+                    }
+                    return false;
+                }
+                else {
+                    mp3sByUrlPath[mp3.getUrlPath()] = mp3;
+                    return true;
+                }
+            });
             return callback(null, mp3s);
         });
     };
