@@ -1,32 +1,15 @@
 
-var fs = require('fs'),
-    Podcast = require('./podcast.js');
+var Podcast = require('./podcast.js');
 
-var configPath, htmlPath;
-if (process.argv.length < 3) {
-  throw new Error('Please provide the path to a config.json file.');
-} else {
-  configPath = process.argv[2];
-  if (process.argv.length > 3) {
-    htmlPath = process.argv[3];
-  }
-}
-
-fs.readFile(configPath, 'utf8', function(error, configJson) {
-  var config = JSON.parse(configJson)
-  var podcast = new Podcast(config, htmlPath);
+module.exports.generatePodcastXml = function(config, callback) {
+  var podcast = new Podcast(config);
   podcast.generateXml(function(error, xml) {
     if (error) {
-      return console.error(error);
+      console.error(error);
+      return callback(new Error(error), null);
     }
 
-    var targetFile = config.target || 'feed.xml';
-    fs.writeFile(targetFile, xml, function(error) {
-      if (error) {
-        return console.error(error);
-      }
-
-      console.log('Created/updated "' + targetFile + '".');
-    });
+    console.log('Successfully generated podcast XML for "' + config.link + '"');
+    return callback(null, xml);
   });
-});
+};
