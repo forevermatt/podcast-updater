@@ -36,11 +36,11 @@ var Mp3 = (function () {
         if (this.dateString === undefined) {
             var dateRegexMatches = this.dateRegex.exec(this.getLabel());
             var dateString;
-            if (dateRegexMatches.length > 0) {
+            if (dateRegexMatches && dateRegexMatches.length > 0) {
                 this.dateString = dateRegexMatches[0] + ' 12:00:00';
             }
             else {
-                this.dateString = null;
+                throw new Error('Unable to parse date from "' + this.getLabel() + '".');
             }
         }
         return this.dateString;
