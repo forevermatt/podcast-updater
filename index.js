@@ -20,7 +20,7 @@ fs.readFile(configPath, 'utf8', function(error, configJson) {
       return console.error(error);
     }
 
-    var targetFile = config.target || 'podcast.xml';
+    var targetFile = config.target || 'feed.xml';
     fs.writeFile(targetFile, xml, function(error) {
       if (error) {
         return console.error(error);

@@ -15,7 +15,7 @@ class Mp3 {
 
   constructor(urlPath: string, label: string) {
     this.urlPath = urlPath.trim();
-    this.label = label.trim();
+    this.setLabel(label);
   }
 
   /**
@@ -58,10 +58,10 @@ class Mp3 {
     if (this.dateString === undefined) {
       var dateRegexMatches = this.dateRegex.exec(this.getLabel());
       var dateString: string;
-      if (dateRegexMatches.length > 0) {
+      if (dateRegexMatches && dateRegexMatches.length > 0) {
         this.dateString = dateRegexMatches[0] + ' 12:00:00';
       } else {
-        this.dateString = null;
+        throw new Error('Unable to parse date from "' + this.getLabel() + '".');
       }
     }
 
@@ -83,6 +83,10 @@ class Mp3 {
 
   public setBaseUrl(baseUrl: string) {
     this.baseUrl = baseUrl.trim();
+  }
+
+  public setLabel(label: string) {
+    this.label = label && label.trim();
   }
 
   public setSize(numBytes: Number) {

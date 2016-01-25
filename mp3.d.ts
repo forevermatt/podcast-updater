@@ -20,5 +20,6 @@ declare class Mp3 {
     getPubDate(): string;
     static getSizeOfMp3(mp3: Mp3, callback: Function): void;
     setBaseUrl(baseUrl: string): void;
+    setLabel(label: string): void;
     setSize(numBytes: Number): void;
 }
