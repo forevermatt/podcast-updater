@@ -1,6 +1,6 @@
 {
   "name": "podcast-updater",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "TypeScript / JavaScript files to read a webpage of links to audio files and generate a podcast XML file from that information.",
   "author": "forevermatt",
   "scripts": {
