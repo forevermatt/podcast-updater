@@ -2,7 +2,6 @@ var request = require('request');
 var rfc822Date = require('rfc822-date');
 var Mp3 = (function () {
     function Mp3(urlPath, label) {
-        this.dateRegex = /[0-9]{1,4}[-/]{1}[0-9]{1,2}[-/]{1}[0-9]{1,4}/;
         this.urlPath = urlPath.trim();
         this.setLabel(label);
     }
@@ -34,7 +33,7 @@ var Mp3 = (function () {
     };
     Mp3.prototype.getDateString = function () {
         if (this.dateString === undefined) {
-            var dateRegexMatches = this.dateRegex.exec(this.getLabel());
+            var dateRegexMatches = Mp3.dateRegex.exec(this.getLabel());
             var dateString;
             if (dateRegexMatches && dateRegexMatches.length > 0) {
                 this.dateString = dateRegexMatches[0] + ' 12:00:00';
@@ -65,6 +64,7 @@ var Mp3 = (function () {
     Mp3.prototype.setSize = function (numBytes) {
         this.size = numBytes;
     };
+    Mp3.dateRegex = /[0-9]{1,4}[-/]{1}[0-9]{1,2}[-/]{1}[0-9]{1,4}/;
     return Mp3;
 })();
 module.exports = Mp3;

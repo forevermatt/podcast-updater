@@ -4,7 +4,7 @@ declare var request: any;
 declare var rfc822Date: any;
 declare class Mp3 {
     private baseUrl;
-    private dateRegex;
+    private static dateRegex;
     private dateString;
     private label;
     private size;
