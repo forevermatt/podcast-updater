@@ -7,7 +7,7 @@ var rfc822Date = require('rfc822-date');
 class Mp3 {
 
   private baseUrl: string;
-  private dateRegex: RegExp = /[0-9]{1,4}[-/]{1}[0-9]{1,2}[-/]{1}[0-9]{1,4}/;
+  private static dateRegex: RegExp = /[0-9]{1,4}[-/]{1}[0-9]{1,2}[-/]{1}[0-9]{1,4}/;
   private dateString: string;
   private label: string;
   private size: Number;
@@ -38,12 +38,21 @@ class Mp3 {
   }
 
   public getFullUrl(): string {
-    if ( ! this.baseUrl) {
-      throw new Error(
-        "This MP3's base URL is unknown, so we cannot determine its full URL."
-      );
+    var fullUrl;
+
+    // If this MP3's URL is a relative path...
+    if (this.urlPath.indexOf('http') < 0) {
+      if ( ! this.baseUrl) {
+        throw new Error(
+          "This MP3's URL is a relative path and its base URL is unknown, so " +
+          "we cannot determine its full URL."
+        );
+      }
+      fullUrl = this.baseUrl + this.urlPath;
+    } else {
+      fullUrl = this.urlPath;
     }
-    return (this.baseUrl + this.urlPath).replace(/ /g, '%20');
+    return fullUrl.replace(/ /g, '%20');
   }
 
   public getDate(): Date {
@@ -56,7 +65,7 @@ class Mp3 {
 
   public getDateString(): string {
     if (this.dateString === undefined) {
-      var dateRegexMatches = this.dateRegex.exec(this.getLabel());
+      var dateRegexMatches = Mp3.dateRegex.exec(this.getLabel());
       var dateString: string;
       if (dateRegexMatches && dateRegexMatches.length > 0) {
         this.dateString = dateRegexMatches[0] + ' 12:00:00';

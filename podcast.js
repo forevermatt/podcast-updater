@@ -1,6 +1,6 @@
 var async = require('async'), Mp3Class = require('./mp3.js'), podcastWebpage = require('./podcast-webpage.js'), podcastXml = require('./podcast-xml.js');
 var Podcast = (function () {
-    function Podcast(config, htmlPath) {
+    function Podcast(config) {
         this.config = config;
         podcastXml.validateConfig(this.config);
         if (!config.link) {
@@ -9,8 +9,8 @@ var Podcast = (function () {
                 'the HTML to avoid unnecessary HTTP requests.');
         }
         this.webpageBaseUrl = Podcast.getBaseUrl(config.link);
-        if (htmlPath) {
-            this.htmlPath = htmlPath;
+        if (config.htmlPath) {
+            this.htmlPath = config.htmlPath;
         }
         else if (config.link) {
             this.htmlPath = config.link;
