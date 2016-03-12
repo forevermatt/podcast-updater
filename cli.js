@@ -14,6 +14,11 @@ if (process.argv.length < 3) {
 
 fs.readFile(configPath, 'utf8', function(error, configJson) {
   var config = JSON.parse(configJson);
+
+  if (htmlPath) {
+    config.htmlPath = htmlPath;
+  }
+  
   podcastUpdater.generatePodcastXml(config, function(error, xml) {
     if (error) {
       return console.error(error);

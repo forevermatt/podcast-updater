@@ -12,7 +12,7 @@ class Podcast {
   private htmlPath: string;
   private webpageBaseUrl: string;
 
-  constructor(config, htmlPath) {
+  constructor(config) {
     this.config = config;
 
     podcastXml.validateConfig(this.config);
@@ -27,8 +27,8 @@ class Podcast {
 
     this.webpageBaseUrl = Podcast.getBaseUrl(config.link);
 
-    if (htmlPath) {
-      this.htmlPath = htmlPath;
+    if (config.htmlPath) {
+      this.htmlPath = config.htmlPath;
     } else if (config.link) {
       this.htmlPath = config.link;
     }
@@ -49,6 +49,7 @@ class Podcast {
 
   public generateXml(callback) {
     var podcast = this;
+
     this.getMp3Data(this.htmlPath, function(error, mp3Data) {
       if (error) {
         return callback(new Error(error), null);
@@ -60,9 +61,11 @@ class Podcast {
   }
 
   private getMp3Data(htmlPath, callback) {
+
     var podcast = this;
     var webpage = new podcastWebpage(htmlPath);
     webpage.getListOfMp3s(function(err, mp3s) {
+
       if (err) {
         return callback(new Error(err), null);
       }

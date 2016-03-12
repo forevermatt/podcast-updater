@@ -5,7 +5,7 @@ declare class Podcast {
     private config;
     private htmlPath;
     private webpageBaseUrl;
-    constructor(config: any, htmlPath: any);
+    constructor(config: any);
     static getBaseUrl(fullUrl: string): string;
     private getWebpageBaseUrl();
     generateXml(callback: any): void;
