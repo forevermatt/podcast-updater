@@ -5,7 +5,6 @@ module.exports.generatePodcastXml = function(config, callback) {
   var podcast = new Podcast(config);
   podcast.generateXml(function(error, xml) {
     if (error) {
-      console.error(error);
       return callback(new Error(error), null);
     }
 
