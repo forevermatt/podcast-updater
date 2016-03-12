@@ -18,10 +18,18 @@ var Mp3 = (function () {
         return this.urlPath;
     };
     Mp3.prototype.getFullUrl = function () {
-        if (!this.baseUrl) {
-            throw new Error("This MP3's base URL is unknown, so we cannot determine its full URL.");
+        var fullUrl;
+        if (this.urlPath.indexOf('http') < 0) {
+            if (!this.baseUrl) {
+                throw new Error("This MP3's URL is a relative path and its base URL is unknown, so " +
+                    "we cannot determine its full URL.");
+            }
+            fullUrl = this.baseUrl + this.urlPath;
         }
-        return (this.baseUrl + this.urlPath).replace(/ /g, '%20');
+        else {
+            fullUrl = this.urlPath;
+        }
+        return fullUrl.replace(/ /g, '%20');
     };
     Mp3.prototype.getDate = function () {
         if (this.getDateString()) {

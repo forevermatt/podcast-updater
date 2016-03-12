@@ -38,12 +38,21 @@ class Mp3 {
   }
 
   public getFullUrl(): string {
-    if ( ! this.baseUrl) {
-      throw new Error(
-        "This MP3's base URL is unknown, so we cannot determine its full URL."
-      );
+    var fullUrl;
+
+    // If this MP3's URL is a relative path...
+    if (this.urlPath.indexOf('http') < 0) {
+      if ( ! this.baseUrl) {
+        throw new Error(
+          "This MP3's URL is a relative path and its base URL is unknown, so " +
+          "we cannot determine its full URL."
+        );
+      }
+      fullUrl = this.baseUrl + this.urlPath;
+    } else {
+      fullUrl = this.urlPath;
     }
-    return (this.baseUrl + this.urlPath).replace(/ /g, '%20');
+    return fullUrl.replace(/ /g, '%20');
   }
 
   public getDate(): Date {
